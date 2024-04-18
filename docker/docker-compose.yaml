@@ -1,0 +1,39 @@
+services:
+
+  mysql:
+    image: mysql:5.7
+    environment:
+      - MYSQL_DATABASE=names_db
+      - MYSQL_ROOT_PASSWORD=pass
+    container_name: mysql
+    restart: always
+    networks:
+      - nginx-node
+
+  node:
+    build:
+      context: ../
+    image: spinnerz/fullcycle-node
+    container_name: node
+    restart: always
+    networks:
+      - nginx-node
+    depends_on:
+      - mysql
+  
+  nginx:
+    build:
+      context: ./nginx
+    image: spinnerz/fullcycle-nginx
+    container_name: nginx
+    restart: always
+    networks:
+      - nginx-node
+    ports:
+      - "8080:8080"
+    depends_on:
+      - node
+
+networks:
+  nginx-node:
+    driver: bridge
