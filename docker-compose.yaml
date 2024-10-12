@@ -12,7 +12,7 @@ services:
 
   node:
     build:
-      context: ../
+      context: .
     image: spinnerz/fullcycle-node
     container_name: node
     restart: always
